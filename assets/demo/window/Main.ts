@@ -13,13 +13,13 @@ import { UIConfigData, UIID } from '../../script/game/common/config/GameUIConfig
 const { ccclass, property } = _decorator;
 
 /** 
- * 游戏多种类窗口功能演示
- * 1、主界面
- * 2、界面切换
- * 3、弹出窗口
- * 4、模式窗口
- * 5、弹出窗口传数据方式
- * 6、弹出窗口动画
+ * Demonstration of various types of game window functions
+ * 1. Main interface
+ * 2. Interface switching
+ * 3. Pop-up window
+ * 4. Modal window
+ * 5. Pop-up window data transmission method
+ * 6. Pop-up window animation
  */
 @ccclass('Main')
 export class Main extends Root {
@@ -48,10 +48,10 @@ export class Main extends Root {
     btnDialog() {
         var uic: PopViewParams = {
             onAdded: (node: Node, params: any) => {
-                console.log("界面添加到父节点后");
+                console.log("After the interface is added to the parent node");
             },
             onRemoved: (node: Node | null, params: any) => {
-                console.log("界面从父节点移除后");
+                console.log("After the interface is removed from the parent node");
             }
         }
         oops.gui.open(UIID.Dialog, { param: "Dialog" }, uic);
@@ -59,7 +59,7 @@ export class Main extends Root {
 
     private getPopCommonEffect(callbacks?: PopViewParams) {
         let newCallbacks: PopViewParams = {
-            // 节点添加动画
+            // Node adding animation
             onAdded: (node, params) => {
                 node.setScale(0.1, 0.1, 0.1);
 
@@ -67,7 +67,7 @@ export class Main extends Root {
                     .to(0.2, { scale: new Vec3(1, 1, 1) })
                     .start();
             },
-            // 节点删除动画
+            // Node deletion animation
             onBeforeRemove: (node, next) => {
                 tween(node)
                     .to(0.2, { scale: new Vec3(0.1, 0.1, 0.1) })

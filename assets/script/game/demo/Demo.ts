@@ -13,7 +13,7 @@ import { tips } from "../common/prompt/TipsManager";
 import { RoleViewInfoComp } from "../role/view/RoleViewInfoComp";
 
 const { ccclass, property } = _decorator;
-// 视图层实体是空的
+// View layer entity is empty
 @ccclass('Demo')
 export class Demo extends Component {
     private lang: boolean = true;
@@ -30,8 +30,8 @@ export class Demo extends Component {
     start() {
         // resLoader.dump();
 
-        // console.log("当前图集数量", dynamicAtlasManager.atlasCount);
-        // console.log("可以创建的最大图集数量", dynamicAtlasManager.maxAtlasCount);
+        // console.log("Current number of atlases", dynamicAtlasManager.atlasCount);
+        // console.log("The maximum number of atlases that can be created", dynamicAtlasManager.maxAtlasCount);
         // console.log("创建的图集的宽高", dynamicAtlasManager.textureSize);
         // console.log("可以添加进图集的图片的最大尺寸", dynamicAtlasManager.maxFrameSize);
         // console.log("可以添加进图集的图片的最大尺寸", dynamicAtlasManager.maxFrameSize);
@@ -72,7 +72,7 @@ export class Demo extends Component {
         oops.gui.toast(data, true);
     }
 
-    /** 升级 */
+    /** upgrade */
     private btn_level_up(event: EventTouch, data: any) {
         var role = smc.account.AccountModel.role;
         role.upgrade();
@@ -80,7 +80,7 @@ export class Demo extends Component {
         // resLoader.releaseDir("content/role");
     }
 
-    /** 攻击 */
+    /** attack */
     private btn_attack(event: EventTouch, data: any) {
         var role = smc.account.AccountModel.role;
         role.attack();
@@ -89,13 +89,13 @@ export class Demo extends Component {
         // role.RoleView.node.parent = oops.gui.game;
     }
 
-    /** 转职弓箭 */
+    /** Class transfer bow and arrow */
     private btn_change_job9(event: EventTouch, data: any) {
         var role = smc.account.AccountModel.role;
         role.changeJob(9);
     }
 
-    /** 转职匕首 */
+    /** Job transfer dagger */
     private btn_change_job5(event: EventTouch, data: any) {
         var role = smc.account.AccountModel.role;
         role.changeJob(5);
@@ -110,7 +110,7 @@ export class Demo extends Component {
     /** 打开角色界面 */
     private async btn_open_role_info(event: EventTouch, data: any) {
         var role = smc.account.AccountModel.role;
-        var node = await oops.gui.openAsync(UIID.Demo_Role_Info, "传递参数");
+        var node = await oops.gui.openAsync(UIID.Demo_Role_Info, "Pass parameters");
         if (node) role.add(node.getComponent(RoleViewInfoComp)!);
     }
 
@@ -136,20 +136,20 @@ export class Demo extends Component {
         tips.test(() => {
 
         });
-        tips.confirm("内容1", () => {
+        tips.confirm("Content 1", () => {
 
-        }, "确认1");
-        tips.confirm("内容2", () => {
+        }, "Confirm 1");
+        tips.confirm("Content 2", () => {
 
-        }, "确认2");
+        }, "Confirm 2");
     }
 
-    /** 漂浮提示框 */
+    /** Floating prompt box */
     private btn_notify_show(event: EventTouch, data: any) {
         oops.gui.toast("common_prompt_content", true);
     }
 
-    /** 加载提示 */
+    /** Loading prompt */
     private netInstableOpen(event: EventTouch, data: any) {
         // tips.netInstableOpen();
         oops.gui.waitOpen();
@@ -159,13 +159,13 @@ export class Demo extends Component {
         }, 2000);
     }
 
-    /** 背景音乐 */
+    /** Background music */
     private btn_audio_open1(event: EventTouch, data: any) {
         oops.audio.volumeMusic = 0.5;
         oops.audio.playMusicLoop("audios/nocturne");
     }
 
-    /** 背景音效 */
+    /** background sound effects */
     private btn_audio_open2(event: EventTouch, data: any) {
         oops.audio.playEffect("audios/Gravel");
     }

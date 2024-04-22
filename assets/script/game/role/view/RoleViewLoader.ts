@@ -12,7 +12,7 @@ import { Role } from "../Role";
 
 const { ccclass, property } = _decorator;
 
-/** 角色资源加载 */
+/** Character resource loading */
 @ccclass('RoleViewLoader')
 export class RoleViewLoader extends Component {
     spine: sp.Skeleton = null!;
@@ -32,7 +32,7 @@ export class RoleViewLoader extends Component {
         var path = GameResPath.getRolePath(name);
         oops.res.load(path, sp.SkeletonData, (err: Error | null, sd: sp.SkeletonData) => {
             if (err) {
-                console.error(`动画名为【${path}】的角色资源不存在`);
+                console.error(`The character resource named [${path}] for animation does not exist`);
                 return;
             }
 

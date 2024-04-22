@@ -42,13 +42,13 @@ export class RoleViewInfoComp extends CCComp {
     reset() {
         oops.gui.remove(UIID.Demo_Role_Info, false);
 
-        // 注：模拟二次删除清理缓存
+        // Note: Simulate secondary deletion and clean cache
         setTimeout(() => {
             oops.gui.remove(UIID.Demo_Role_Info);
         }, 1000);
     }
 
     protected onDestroy(): void {
-        console.log("释放角色信息界面");
+        console.log("Release the role information interface");
     }
 }

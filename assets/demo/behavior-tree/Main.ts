@@ -12,14 +12,14 @@ import { Timer } from '../../../extensions/oops-plugin-framework/assets/core/com
 const { ccclass, property } = _decorator;
 
 /** 
- * 行为演示
- * 功能说明：一个角色向前移动，如果碰到敌人就停下，如果没有则继续移动
+ * behavioral demonstration
+ * Function description: A character moves forward, stops if it encounters an enemy, and continues moving if there is no enemy.
  */
 @ccclass('Main')
 export class Main extends Root {
-    /** 角色位置 */
+    /** character position*/
     role_pos: number = 0;
-    /** 敌人位置 */
+    /** enemy position*/
     enemy_pos: number = 3;
 
     private bt: BehaviorTree = null!;
@@ -30,7 +30,9 @@ export class Main extends Root {
         btns.push(new RoleMoveTask());
         btns.push(new IsSeeEnemy(new RoleMoveStopTask()));
 
-        // 这里表达，RoleMoveTask节点先处理角色移动一步，IsSeeEnemy节点验证是否碰到敌人，如果碰到，IsSeeEnemy下面挂的任务节点就处理碰到敌人的提示。
+        // Expressed here, the role move task node first processes the character movement one step, 
+        // and the is see enemy node verifies whether it encounters the enemy. 
+        // If so, the task node hanging below is see enemy processes the prompt of encountering the enemy.
         this.bt = new BehaviorTree(new Sequence(btns));
     }
 
@@ -42,35 +44,40 @@ export class Main extends Root {
     }
 }
 
-/** 演示控制移动，通过行为树黑板的概念把需要处理的Main对象传递到行为树中,每过一秒先移动一步 */
+/** Demonstrates control movement, passing the main object that needs to be processed to the behavior tree through the concept of the behavior tree blackboard, 
+ * and moving one step every second.*/
 class RoleMoveTask extends Task {
     run(obj?: Main): void {
         if (obj) {
             obj.role_pos++;
-            console.log(`角色当前移动了【${obj.role_pos}】步`);
+            console.log(`The character is currently moving [${obj.role_pos}] step`);
         }
         this.success();
     }
 }
 
-/** 装饰器是条件语句只能附加在其他节点上并且定义所附加的节点是否执行，这里验证比如敌人位置与之相等后，表示条件验证成功,继续执行后续任务，失败结束行为树的处理流程 */
+/** The decorator is a conditional statement that can only be attached to other nodes and defines whether the attached node is executed. 
+ * Here, after verifying that the enemy position is equal to it, it means that the condition verification is successful and subsequent tasks continue to be executed. 
+ * If it fails, the processing flow of the behavior tree ends.*/
 class IsSeeEnemy extends Decorator {
     run(blackboard: Main) {
         if (blackboard.role_pos >= blackboard.enemy_pos) {
             super.run(blackboard);
-            this.success();         // 调用此方法，代表此节点表达验证逻辑为true的结果，可以执行后续节点
+            this.success();         // Call this method to express the result that the verification logic is true on behalf of this node, 
+                                    // and subsequent nodes can be executed.
         }
         else {
-            this.fail();            // 调用此方法，代表此节点表达验证逻辑为false的结果，不能执行后续节点
+            this.fail();            // Calling this method represents the result that the verification logic of this node is false, 
+                                    // and subsequent nodes cannot be executed.
         }
     }
 }
 
-/** 玩家自己停止动作逻辑，这类逻辑一般只会成本，属于确定的流程 */
+/** Players perform their own action logic. This type of logic generally only costs costs and is a definite process. */
 class RoleMoveStopTask extends Task {
     run(blackboard: Main): void {
-        console.log(`角色当前停止移动`);
-        blackboard.enabled = false;             // 不在触发行为树处理逻辑
+        console.log(`The character is currently stopped moving`);
+        blackboard.enabled = false;             // No longer triggers behavior tree processing logic
         this.success();
     }
 }

@@ -14,13 +14,13 @@ import { Role } from "../../role/Role";
 import { Account } from "../Account";
 import { AccountModelComp } from "../model/AccountModelComp";
 
-/** 请求玩家游戏数据 */
+/** Request player game data */
 @ecs.register('AccountNetData')
 export class AccountNetDataComp extends ecs.Comp {
     reset() { }
 }
 
-/** 请求玩家游戏数据 */
+/** Request player game data */
 @ecs.register('Account')
 export class AccountNetDataSystem extends ecs.ComblockSystem implements ecs.IEntityEnterSystem {
     filter(): ecs.IMatcher {
@@ -36,23 +36,23 @@ export class AccountNetDataSystem extends ecs.ComblockSystem implements ecs.IEnt
         let onComplete = {
             target: this,
             callback: (data: any) => {
-                // 设置本地存储的用户标识（用于下次登录不输入帐号）
+                // Set a locally stored user ID (for next login without entering an account)
                 this.setLocalStorage(data.id);
 
-                // 创建玩家角色对象
+                // Create player character object
                 this.createRole(e, data);
 
-                // 玩家登录成功事件
+                // Player login success event
                 oops.message.dispatchEvent(GameEvent.LoginSuccess);
             }
         }
-        // 请求登录游戏获取角色数据
+        // Request to log in to the game to obtain character data
         // netChannel.game.req("LoginAction", "loadPlayer", params, onComplete);
 
-        // 离线测试代码开始
+        // Offline testing code begins
         var data = {
             id: 1,
-            name: "Oops",
+            name: "Player 1",
             power: 10,
             agile: 10,
             physical: 10,
@@ -60,20 +60,20 @@ export class AccountNetDataSystem extends ecs.ComblockSystem implements ecs.IEnt
             jobId: 1
         }
         onComplete.callback(data);
-        // 离线测试代码结束
+        // End of offline test code
 
         e.remove(AccountNetDataComp);
     }
 
-    /** 创建角色对象（自定义逻辑） */
+    /** Create role objects (custom logic) */
     private createRole(e: Account, data: any) {
         var role = ecs.getEntity<Role>(Role);
 
-        // 角色数据
+        // character data
         role.RoleModel.id = data.id;
         role.RoleModel.name = data.name;
 
-        // 角色初始战斗属性
+        // Character's initial combat attributes
         role.RoleModelBase.power = data.power;
         role.RoleModelBase.agile = data.agile;
         role.RoleModelBase.physical = data.physical;
