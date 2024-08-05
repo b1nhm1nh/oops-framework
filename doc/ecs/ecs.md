@@ -1,21 +1,21 @@
-# 简介
-libs/ecs 这是一个 Typescript 语言版的Entity-Component-System框架架。
+# Introduction
+libs/ecs This is a Typescript language version of the Entity-Component-System framework.
 
-# 使用说明
-创建实体
+# Instructions for use
+Create entity
 ```Typescript
 ecs.getEntity<ecs.Entity>(ecs.Entity);
 ```
 
-## 组件
-自定义组件必须继承ecs.Comp，并且需要使用ecs.register注册组件。
+## Components
+Custom components must inherit ecs.Comp and need to use ecs.register to register the component.
 ```TypeScript
 @ecs.register('Hello')
 export class HelloComponent extends ecs.Comp {
     info: string;
     data: number;
 
-    // 组件被回收前会调用这个方法。
+    //This method will be called before the component is recycled.
     reset() {
         this.info = '';
         this.data = 0;
@@ -23,111 +23,110 @@ export class HelloComponent extends ecs.Comp {
 }
 ```
 
-## ecs.register功能
-- 能通过```entity.Hello```获得组件对象；
-- 将组件的构造函数存入ecs上下文中，并且给该类组件分配一个组件id。
+##ecs.register function
+-The component object can be obtained through ```entity.Hello```;
+-Store the component's constructor in the ecs context, and assign a component id to this type of component.
 
-## 实体
-为了能利用Typescript的类型提示机制，在使用实体的时候需要用户自己继承ecs.Entity。
+## Entity
+In order to take advantage of Typescript's type hinting mechanism, users need to inherit ecs.Entity themselves when using entities.
 ```TypeScript
 ecs.register('HelloEntity')
 export class HelloEntity extends ecs.Entity {
-    Hello: HelloComponent; // 这里的Hello要和ecs.register中填入的参数一致
+    Hello: HelloComponent; //The Hello here must be consistent with the parameters filled in ecs.register
 }
 ```
 
-- 管理子实体
+-Manage sub-entities
 ```TypeScript
-// 添加子实体
+//Add subentity
 entity.addChild(ecs.Entity);
 
-// 移除子实体
+//Remove child entities
 entity.removeChild(ecs.Entity);
 ```
 
-- 添加组件：
+-Add components:
 ```TypeScript
-entity.add(HelloComponent); // 添加组件时会优先从组件缓存池中获取无用的组件对象，如果没有才会新创建一个组件对象
+entity.add(HelloComponent); //When adding a component, useless component objects will be obtained from the component cache pool first. If there is no component object, a new component object will be created.
 ```
-
-- 添加组件对象：注意，外部创建的组件对象ecs系统不负责回收，需要用户自己管理该组件对象的声明周期。
+-Add component objects: Note that the ecs system is not responsible for recycling externally created component objects, and users need to manage the declaration cycle of the component objects themselves.
 ```Typescript
 let compObj = new HelloComponent();
 entity.add(compObj)
 ```
 
-- 删除组件：
+-Remove components:
 ```TypeScript
-entity.remove(HelloComponent); // 组件对象会从实体身上移除并放入组件缓存池中
+entity.remove(HelloComponent); //The component object will be removed from the entity and placed in the component cache pool
 ```
 
-- 删除组件但不删除组件对象：实际开发中，组件身上有很多属性，如果删除了后面再添加，属性值还原是个麻烦的问题，
-remove方法可以删除组件，但是不真正从实体身上移除该组件对象，这样下次重新添加组件时还是会添加那个组件对象。
+-Deleting components but not deleting component objects: In actual development, components have many attributes. If they are deleted and then added later, restoring the attribute values ​​is a troublesome problem.
+The remove method can delete a component, but it does not actually remove the component object from the entity, so that the component object will still be added the next time the component is re-added.
 ```Typescript
 entity.remove(HelloComponent, false)
 ```
 
-- 获得组件对象
+-Get component object
 ```TypeScript
-entity.Hello; // 见上方自定义实体操作
+entity.Hello; //See custom entity operations above
 
 entity.get(HelloComponent);
 ```
 
-- 判断是否拥有组件：
+-Determine whether you own the component:
 ```TypeScript
 entity.has(HelloComponent);
 
 !!entity.Hello;
 ```
 
-- 销毁实体：
+-Destroy the entity:
 ```TypeScript
-entity.destroy() // 销毁实体时会先删除实体身上的所有组件，然后将实体放入实体缓存池中
+entity.destroy() //When destroying an entity, all components on the entity will be deleted first, and then the entity will be placed in the entity cache pool.
 ```
 
-## 实体筛选
-目前提供了四种类型的筛选能力，但是这四种筛选能力可以组合从而提供更强大的筛选功能。
-- anyOf: 用来描述包含任意一个这些组件的实体；
-- allOf: 用来描述同时包含了这些组件的实体；
-- onlyOf: 用来描述只包含了这些组件的实体；不是特殊情况不建议使用onlyOf，因为onlyOf会监听所有组件的添加和删除事件；
-- excludeOf: 表示不包含所有这里面的组件（与关系）；
+## Entity filtering
+Four types of filtering capabilities are currently provided, but these four filtering capabilities can be combined to provide more powerful filtering capabilities.
+-anyOf: used to describe entities containing any one of these components;
+-allOf: used to describe entities that contain these components;
+-onlyOf: used to describe entities that only contain these components; it is not recommended to use onlyOf unless it is a special case, because onlyOf will listen to the addition and deletion events of all components;
+-excludeOf: means not including all components (and relationship);
 
-使用方式：
+How to use:
 
-- 表示同时拥有多个组件
+-Indicates having multiple components at the same time
 ```TypeScript
 ecs.allOf(AComponent, BComponent, CComponent);
 ```
-- 表示拥有任意一个组件
+-means owning any component
 ```Typescript
 ecs.anyOf(AComponent, BComponent);
 ```
-- 表示拥有某些组件，并且不包含某些组件
+-Indicates having some components and not containing some components
 ```Typescript
-// 不包含CComponent或者DComponent
+//Does not contain CComponent or DComponent
 ecs.allOf(AComponent, BComponent).excludeOf(CComponent, DComponent);
 
-// 不同时包含CComponent和DComponent
+//Do not include CComponent and DComponent at the same time
 ecs.allOf(AComponent, BComponent).excludeOf(CComponent).excludeOf(DComponent);
 ```
 
-### 直接查询并获得实体
+### Directly query and obtain entities
 ```Typescript
 ecs.query(ecs.allOf(Comp1, Comp2))
 ```
 
-## 系统
-- ecs.System: 用来组合某一功能所包含的System；
-- ecs.RootSystem: System的root；
-- ecs.ComblockSystem: 抽象类，组合式的System。默认情况，如果该System有实体，则每帧都会执行update方法；
-- ecs.IEntityEnterSystem: 实现这个接口表示关注实体的首次进入；
-- ecs.IEntityRemoveSystem: 实现这个接口表示关注实体的移除；
-- ecs.ISystemFirstUpdate: 实现这个接口会在System第一次执行update前执行一次firstUpdate
-- ecs.ISystemUpdate:实现这个接口会在System中每帧出发update方法
+## System
+-ecs.System: used to combine the System included in a certain function;
+-ecs.RootSystem: System root;
+-ecs.ComblockSystem: abstract class, combined System. By default, if the System has entities, the update method will be executed every frame;
+-ecs.IEntityEnterSystem: Implement this interface to indicate the first entry of the entity of interest;
+-ecs.IEntityRemoveSystem: Implement this interface to indicate the removal of entities of interest;
+-ecs.ISystemFirstUpdate: Implementing this interface will execute firstUpdate before System executes update for the first time.
+-ecs.ISystemUpdate: Implementing this interface will trigger the update method in System every frame
 
-# 怎么使用
-1、声明组件
+# how to use
+1. Declare components
 ```TypeScript
 @ecs.register('Node')
 export class NodeComponent extends ecs.Comp {
@@ -162,11 +161,11 @@ export class TransformComponent extends ecs.Comp {
 export class AvatarEntity extends ecs.Entity {
     Node: NodeComponent;
     Move: MoveComponent;
-    Transform: TransformComponent;
+Transform: TransformComponent;
 }
 ```
 
-2、创建系统
+2. Create a system
 ```TypeScript
 export class RoomSystem extends ecs.RootSystem {
     constructor() {
@@ -184,21 +183,19 @@ export class MoveSystem extends ecs.ComblockSystem<AvatarEntity> implements ecs.
     filter(): ecs.IMatcher {
         return ecs.allOf(MoveComponent, TransformComponent);
     }
-
-     // 实体第一次进入MoveSystem会进入此方法
+//The first time an entity enters MoveSystem, it will enter this method.
     entityEnter(e: AvatarEntity) {
         e.Move.speed = 100;
     }
     
-    // 每帧都会更新
+    //Updated every frame
     update(e: AvatarEntity) {
-        let moveComp = e.Move;                      // e.get(MoveComponent);
+        let moveComp = e.Move; //e.get(MoveComponent);
         lel position = e.Transform.position;
         
-        position.x += moveComp.heading.x * moveComp.speed * this.dt;
-        position.y += moveComp.heading.y * moveComp.speed * this.dt;
-        
-        e.Transform.angle = cc.misc.lerp(e.Transform.angle, Math.atan2(moveComp.speed.y, moveComp.speed.x) * cc.macro.DEG, dt);
+        position.x += moveComp.heading.x *moveComp.speed *this.dt;
+        position.y += moveComp.heading.y *moveComp.speed *this.dt;
+e.Transform.angle = cc.misc.lerp(e.Transform.angle, Math.atan2(moveComp.speed.y, moveComp.speed.x) *cc.macro.DEG, dt);
     }
 }
 
@@ -207,10 +204,10 @@ export class RenderSystem extends ecs.ComblockSystem<AvatarEntity> implements ec
         return ecs.allOf(NodeComponent, TransformComponent);
     }
     
-    // 实体第一次进入MoveSystem会进入此方法
+    //The entity will enter this method when entering the move system for the first time.
     entityEnter(e: AvatarEntity) {
         e.Node.val.active = true;
-    }
+}
     
     entityRemove(e: AvatarEntity) {
        
@@ -223,7 +220,7 @@ export class RenderSystem extends ecs.ComblockSystem<AvatarEntity> implements ec
 }
 ```
 
-3、驱动ecs框架
+3、Drive ecs framework
 ```TypeScript
 const { ccclass, property } = cc._decorator;
 @ccclass
@@ -234,8 +231,7 @@ export class GameControllerBehaviour extends Component {
         this.rootSystem = new RootSystem();
         this.rootSystem.init();
     }
-    
-    createAvatar(node: cc.Node) {
+createAvatar(node: cc.Node) {
         let entity = ecs.createEntityWithComps<AvatarEntity>(NodeComponent, TransformComponent, MoveComponent);
         entity.Node.val = node;
     }
@@ -247,8 +243,8 @@ export class GameControllerBehaviour extends Component {
 
 ```
 
-# 和Cocos Creator的组件混合使用
-## 创建基类
+#Mixed with Cocos Creator components
+## Create base class
 ```Typescript
 import { Component, _decorator } from "cc";
 import { ecs } from "../../../Libs/ECS";
@@ -260,18 +256,18 @@ export abstract class CCComp extends Component implements ecs.IComp {
     static compName: string;
 
     canRecycle: boolean;
-    ent: ecs.Entity;
+    ent:ecs.Entity;
 
     onLoad() {
         this.ent = ecs.createEntity();
-        this.ent.add(this);    
+        this.ent.add(this);
     }
 
     abstract reset(): void;
 }
 ```
 
-## 创建ecs组件并且赋予序列化的功能，这样就能在Cocos Creator的“属性检查器”上修改参数
+## Create the ecs component and give it the serialization function, so that the parameters can be modified on the "Property Inspector" of Cocos Creator
 ```Typescript
 import { _decorator, toDegree, v3, Node, Vec3 } from "cc";
 import { ecs } from "../../../Libs/ECS";
@@ -297,8 +293,7 @@ export class MovementComponent extends CCComp {
     get maxSpeed() {
         return this._maxSpeed;
     }
-
-    @property
+@property
     heading: Vec3 = v3();
     
     @property
@@ -314,23 +309,23 @@ export class MovementComponent extends CCComp {
             outV3.multiplyScalar(0.025);
             this.heading.add(outV3);
             this.heading.normalize();
-            this.angle = toDegree(Math.atan2(this.heading.y, this.heading.x)) - 90;
-        }
+            this.angle = toDegree(Math.atan2(this.heading.y, this.heading.x)) -90;
+}
         
-        this.speed = Math.min(this.speed + this.acceleration * dt, this._maxSpeed);
+        this.speed = Math.min(this.speed + this.acceleration *dt, this._maxSpeed);
 
-        this.pos.add3f(this.heading.x * this.speed * dt, this.heading.y * this.speed * dt, 0);
+        this.pos.add3f(this.heading.x *this.speed *dt, this.heading.y *this.speed *dt, 0);
     }
 
     calcAngle() {
-        this.angle = toDegree(Math.atan2(this.heading.y, this.heading.x)) - 90;
+        this.angle = toDegree(Math.atan2(this.heading.y, this.heading.x)) -90;
         return this.angle;
     }
 }
 
 ```
 
-## 创建面向Cocos Creator的组件
+## Create components for Cocos Creator
 ```Typescript
 import { Component, _decorator } from "cc";
 const { ccclass, property } = _decorator;
@@ -345,13 +340,13 @@ export class Player extends CCComp {
     onLoad() {
         super.onLoad();
 
-        // 添加MovementComponent组件对象
+        //Add MovementComponent component object
         this.ent.add(this.movement);
     }
 }
 ```
 
-# 调试
-添加如下代码
+# Debug
+Add the following code
 ```TypeScript
 windows['ecs'] = ecs;
