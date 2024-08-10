@@ -13,7 +13,7 @@ class GameProtocol extends NetProtocolPako {
 ```
 
 ##### Create a WebSocket network connection object
-```
+```typescript
 var net = new NetNodeGame();
 var ws = new WebSock(); //WebSocket network connection object
 var gp = new GameProtocol(); //Network communication protocol object
@@ -23,7 +23,7 @@ NetManager.getInstance().setNetNode(net, NetChannelType.Game);
 ```
 
 ##### Connect to game server
-```
+```typescript
 var options = {
     url: `ws://127.0.0.1:3000`,
     autoReconnect: 0 //-1 permanent reconnect, 0 does not automatically reconnect, other positive integers are the number of automatic retries
@@ -32,12 +32,12 @@ NetManager.getInstance().connect(options, NetChannelType.Game);
 ```
 
 ##### Disconnect from the game server
-```
+```typescript
 NetManager.getInstance().close(undefined, undefined, NetChannelType.Game);
     
 ```
 ##### Game Server Tips
-```
+```typescript
 export class NetGameTips implements INetworkTips {
     /**Connection prompt */
     connectTips(isShow: boolean): void {
@@ -80,7 +80,7 @@ export class NetGameTips implements INetworkTips {
 ```
 
 ##### Request server data
-```
+```typescript
 var params: any = {
     playerId: 10000
 }
@@ -97,7 +97,7 @@ net.req("LoginAction", "loadPlayer", params, onComplete);
 ```
 
 ##### Listen to server push data
-```
+```typescript
 var onComplete = (data: any) => {
     //The server returns data
     console.log(data);
