@@ -25,8 +25,8 @@ Note:
 
 #### Technical Documentation
 -[oops-framework](https://oops-1255342636.cos.ap-shanghai.myqcloud.com/doc/oops-framework/index.html)
--[ecs](https://github.com/dgflash/oops-framework/tree/master/doc/ecs/ecs.md)
--[mvvm](https://github.com/dgflash/oops-framework/tree/master/doc/mvvm)
+-[ecs](https://github.com/b1nhm1nh/oops-framework/tree/master/doc/ecs/ecs.md)
+-[mvvm](https://github.com/b1nhm1nh/oops-framework/tree/master/doc/mvvm)
 -[animator](https://github.com/LeeYip/cocos-animator/blob/master/README.md)
 
 #### Technical classification
