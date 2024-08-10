@@ -1,42 +1,42 @@
-### 功能说明
-Oops Framework－全局事件管理主要在设计上降低对象之间的耦合问题，避免相互调用API导致对象强依赖，从而在项目中后期需求变更或扩展时，增加维护成本。
+### Function description
+Oops Framework-global event management is mainly designed to reduce the coupling problem between objects and avoid calling mutual APIs to cause strong object dependence, thereby increasing maintenance costs when requirements change or expand in the middle and later stages of the project.
 
-### 使用说明
-##### 注册持续监听的全局事件
+### Instructions for use
+##### Register global events for continuous monitoring
 ```
 export class RoleViewComp extends Component{
     onLoad(){
-        // 监听全局事件
+        //Listen to global events
         oops.message.on(GameEvent.GameServerConnected, this.onHandler, this);
     }
     
     protected onDestroy() {
-        // 对象释放时取消注册的全局事件
+        //Unregistered global events when the object is released
         oops.message.off(GameEvent.GameServerConnected, this.onHandler, this);
     }
     
     private onHandler(event: string, args: any) {
-        switch (event) {
+switch (event) {
             case GameEvent.GameServerConnected:
-                console.log("处理游戏服务器连接成功后的逻辑");
+                console.log("Processing the logic after the game server connection is successful");
                 break;
         }
     }
 }
 ```
 
-##### 注册只触发一次的全局事件
+##### Register a global event that is triggered only once
 ```
 export class RoleViewComp extends Component{
     onLoad(){
-        // 监听一次事件，事件响应后，该监听自动移除
+        //Listen to an event once. After the event is responded to, the listener is automatically removed.
         oops.message.once(GameEvent.GameServerConnected, this.onHandler, this);
     }
     
     private onHandler(event: string, args: any) {
         switch (event) {
-            case GameEvent.GameServerConnected:
-                console.log("处理游戏服务器连接成功后的逻辑");
+case GameEvent.GameServerConnected:
+                console.log("Processing the logic after the game server connection is successful");
                 break;
         }
     }

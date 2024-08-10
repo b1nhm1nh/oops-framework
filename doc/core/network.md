@@ -3,7 +3,7 @@ Oops Framework -Network module WebSocket handles long-term communication between
 
 ### Instructions for use
 ##### Customized network communication data protocol (GZip compression)
-```
+```typescript
 class GameProtocol extends NetProtocolPako {
     /**Heartbeat protocol */
     getHearbeat(): NetData {
@@ -54,7 +54,7 @@ export class NetGameTips implements INetworkTips {
 
     /**Reconnection prompt */
     reconnectTips(isShow: boolean): void {
-if (isShow) {
+    if (isShow) {
             Logger.logNet("Reconnection starts");
         }
         else {
