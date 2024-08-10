@@ -3,33 +3,33 @@ Oops Framework -the local storage module mainly encapsulates the cross-platform 
 
 ### Instructions for use
 ##### Initialize local storage encryption
-```
+```typescript
 oops.storage.init("key", "vi");
 ```
 Note: Data encryption will not be triggered in debugging mode, which facilitates clear text debugging. Release mode automatically starts data encryption
 
 ##### Initialize local storage encryption
-```
+```typescript
 var uid = 10000; //User unique number data
 oops.storage.setUser(uid);
 ```
 Note: Used to distinguish local storage data of different accounts to prevent data with the same key from being overwritten when logging in with other accounts.
 
 ##### Set the data of the specified keyword
-```
+```typescript
 oops.storage.set(key, value);
 ```
 
 ##### Get the data of the specified keyword
-```
+```typescript
 var data = oops.storage.get(key);
 ```
 ##### Delete the data of the specified keyword
-```
+```typescript
 oops.storage.remove(key);
 ```
 
 ##### Clear the entire local storage
-```
+```typescript
 oops.storage.clear();
 ```

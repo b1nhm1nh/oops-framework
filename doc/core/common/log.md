@@ -3,7 +3,7 @@ Oops Framework -Log management mainly encapsulates the console object log output
 
 ### Instructions for use
 ##### Print the execution time of the code segment
-```
+```typescript
 oops.log.start();
 ...
 Omit N lines of code
@@ -12,13 +12,13 @@ oops.log.end();
 ```
 
 ##### Print form
-```
+```typescript
 var object:any = {uid:1000, name:"oops"};
 oops.log.table(object);
 ```
 
 ##### Print log
-```
+```typescript
 oops.log.trace("Default standard log");
 oops.log.logConfig("Gray configuration log");
 oops.log.logNet("Orange Network Log");

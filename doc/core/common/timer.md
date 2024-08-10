@@ -3,31 +3,31 @@ Oops Framework-time management module mainly implements different types of timer
 
 ### Instructions for use
 ##### Get the elapsed time from the start of the game to now
-```
+```typescript
 oops.timer.getTime();
 ```
 
 ##### Get local time scale
-```
+```typescript
 oops.timer.getLocalTime();
 ```
 
 ##### Register a trigger with a fixed interval
-```
+```typescript
 oops.timer.schedule(()=>{
     //Trigger once every second
 }, 1000);
 ```
 
 ##### Register a delayed trigger that only fires once
-```
+```typescript
 oops.timer.scheduleOnce(()=>{
     //After triggering once after 1 second, it will not trigger again.
 }, 1000);
 ```
 
 ##### Delete a time trigger
-```
+```typescript
 var uuid = oops.timer.schedule(()=>{
     //Trigger once every second
 }, 1000);
@@ -37,12 +37,12 @@ oops.timer.unschedule(uuid);
 ```
 
 ##### Delete all time triggers
-```
+```typescript
 oops.timer.unscheduleAll();
 ```
 
 ##### Register a countdown callback manager on the specified object
-```
+```typescript
 export class Test extends Component {
     private timeId!: string;
     
@@ -62,7 +62,7 @@ export class Test extends Component {
 ```
 
 ##### Unregister a countdown callback manager on the specified object
-```
+```typescript
 export class Test extends Component {
     private timeId!: string;
     
@@ -78,7 +78,7 @@ export class Test extends Component {
 ```
 
 ##### Timing beating component
-```
+```typescript
 export class Test extends Component {
     //Create a timed beat component
     private timer: Timer = new Timer(1);

@@ -62,15 +62,15 @@ oops.gui.removeByNode(cc.Node);
 Note: The Node here must be opened through oops.gui.open or openAsync before it can be closed.
 
 ##### Whether the window with the specified ID exists in the cache
-```
+```typescript
 oops.gui.has(UIID.Loading);
 ```
 
 ##### Fading and floating prompts
-```
+```typescript
 oops.gui.toast("prompt content");
 ```
 ##### Clear all windows
-```
+```typescript
 oops.gui.clear();
 ```

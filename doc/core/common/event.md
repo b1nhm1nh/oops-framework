@@ -3,7 +3,7 @@ Oops Framework-global event management is mainly designed to reduce the coupling
 
 ### Instructions for use
 ##### Register global events for continuous monitoring
-```
+```typescript
 export class RoleViewComp extends Component{
     onLoad(){
         //Listen to global events
@@ -26,7 +26,7 @@ switch (event) {
 ```
 
 ##### Register a global event that is triggered only once
-```
+```typescript
 export class RoleViewComp extends Component{
     onLoad(){
         //Listen to an event once. After the event is responded to, the listener is automatically removed.

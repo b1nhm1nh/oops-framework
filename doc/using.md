@@ -5,14 +5,14 @@ Oops Framework has been available as a Cocos Creator plug-in since version 3.5.2
 Open the Cocos Creator project directory and execute the following command
 
 ###### windows
-```
+```shell
 md extensions
 cd extensions
 git clone -b master https://github.com/dgflash/oops-plugin-framework.git
 git pull
 ```
 ###### mac
-```
+```shell
 mkdir -p extensions
 cd extensions
 git clone -b master https://github.com/dgflash/oops-plugin-framework.git
