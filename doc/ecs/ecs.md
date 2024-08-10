@@ -161,7 +161,7 @@ export class TransformComponent extends ecs.Comp {
 export class AvatarEntity extends ecs.Entity {
     Node: NodeComponent;
     Move: MoveComponent;
-Transform: TransformComponent;
+    Transform: TransformComponent;
 }
 ```
 
@@ -183,7 +183,7 @@ export class MoveSystem extends ecs.ComblockSystem<AvatarEntity> implements ecs.
     filter(): ecs.IMatcher {
         return ecs.allOf(MoveComponent, TransformComponent);
     }
-//The first time an entity enters MoveSystem, it will enter this method.
+    //The first time an entity enters MoveSystem, it will enter this method.
     entityEnter(e: AvatarEntity) {
         e.Move.speed = 100;
     }
@@ -195,7 +195,7 @@ export class MoveSystem extends ecs.ComblockSystem<AvatarEntity> implements ecs.
         
         position.x += moveComp.heading.x *moveComp.speed *this.dt;
         position.y += moveComp.heading.y *moveComp.speed *this.dt;
-e.Transform.angle = cc.misc.lerp(e.Transform.angle, Math.atan2(moveComp.speed.y, moveComp.speed.x) *cc.macro.DEG, dt);
+        e.Transform.angle = cc.misc.lerp(e.Transform.angle, Math.atan2(moveComp.speed.y, moveComp.speed.x) *cc.macro.DEG, dt);
     }
 }
 
@@ -207,7 +207,7 @@ export class RenderSystem extends ecs.ComblockSystem<AvatarEntity> implements ec
     //The entity will enter this method when entering the move system for the first time.
     entityEnter(e: AvatarEntity) {
         e.Node.val.active = true;
-}
+    }
     
     entityRemove(e: AvatarEntity) {
        
@@ -231,7 +231,7 @@ export class GameControllerBehaviour extends Component {
         this.rootSystem = new RootSystem();
         this.rootSystem.init();
     }
-createAvatar(node: cc.Node) {
+    createAvatar(node: cc.Node) {
         let entity = ecs.createEntityWithComps<AvatarEntity>(NodeComponent, TransformComponent, MoveComponent);
         entity.Node.val = node;
     }
@@ -293,7 +293,7 @@ export class MovementComponent extends CCComp {
     get maxSpeed() {
         return this._maxSpeed;
     }
-@property
+    @property
     heading: Vec3 = v3();
     
     @property
@@ -310,7 +310,7 @@ export class MovementComponent extends CCComp {
             this.heading.add(outV3);
             this.heading.normalize();
             this.angle = toDegree(Math.atan2(this.heading.y, this.heading.x)) -90;
-}
+    }
         
         this.speed = Math.min(this.speed + this.acceleration *dt, this._maxSpeed);
 
