@@ -1,31 +1,30 @@
 ## VM Component Edit
 
-### 介绍 
+### introduce 
 
-VM组件编辑，提供一些基础的功能。可以搜索当前节点下的 组件内容，便于查询出被绑定的节点，方便调试信息。
+VM component editor, providing some basic functions. You can search the component content under the current node to easily query the bound node and debug information.
 
-### 编辑器属性
+### Editor properties
 
-- `Find List`  - 需要查询的组件名称
+-`Find List` -the name of the component to be queried
 
-- `Action Type` - 操作行为 
+-`Action Type` -operation behavior
 
-     `SEARCH_COMPONENT`  - 查询组件
+     `SEARCH_COMPONENT` -query component
 
-     `ENABLE_COMPONENT` - 激活关闭组件
+     `ENABLE_COMPONENT` -Activate a closed component
 
-     `REPLACE_WATCH_PATH` -  替换组件路径
+     `REPLACE_WATCH_PATH` -Replace component path
 
-     `DELETE_COMPONENT` - 删除所有匹配组件
+     `DELETE_COMPONENT` -delete all matching components
 
-- `Trigger` - 勾选框就会立刻执行对应的命令, 不同模式下Trigger名称不同
+-`Trigger` -Check the box and the corresponding command will be executed immediately. The Trigger name is different in different modes.
 
-- `Can Collect Nodes` - 将节点收集起来 放在 Collect Nodes 中，Action Type 为 SEARCH_COMPONENT 类型时 才能使用
+-`Can Collect Nodes` -Collect nodes and place them in Collect Nodes. This can only be used when the Action Type is SEARCH_COMPONENT.
+-`Target Path` -The target path to be searched, available when Action Type is REPLACE_WATCH_PATH
 
-- `Target Path` -  准备搜索的目标路径，Action Type 为 REPLACE_WATCH_PATH  时可用
+-`Replace Path` -The path value to be replaced, available when Action Type is REPLACE_WATCH_PATH
 
-- `Replace Path` -  准备替换的路径值，Action Type 为 REPLACE_WATCH_PATH  时可用
+### Manual editor
 
-### 手动编辑器
-
-在层级管理器中 搜索  t:VMBase， 也可以查询到所有VM组件的节点，然后你可以进行手动的管理操作
+Search for t:VMBase in the hierarchical manager. You can also query the nodes of all VM components, and then you can perform manual management operations.

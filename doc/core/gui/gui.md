@@ -1,77 +1,76 @@
-### 功能说明
-Oops Framework－界面管理模块，主要实现游戏中不同类型的窗口管理，例如常住主界面窗口、弹出窗口、模式窗口，系统提示窗口等。
+### Function description
+Oops Framework -interface management module, mainly implements different types of window management in games, such as permanent main interface windows, pop-up windows, modal windows, system prompt windows, etc.
 
-### 使用说明
-##### 窗口配置字段
-| 字段   | 介绍     |
-| ------ | -------- |
-| layer  | 窗口层级 |
-| prefab | 预制资源相对路径 |
-| bundle | 远程包名 |
+### Instructions for use
+##### Window configuration fields
+| Fields | Introduction                      |
+| ----- -| ----------------------------------|
+| layer  | window level                      |
+| prefab | Relative path of prefab resources |
+| bundle | remote package name               |
 
-##### 窗口配置数据
+##### Window configuration data
 ```
-/** 界面唯一标识 */
+/**Unique identifier of the interface */
 export enum UIID {
-    /** 资源加载界面 */
+    /**Resource loading interface */
     Loading = 1,
-    /** 弹窗界面 */
+    /**Pop-up interface */
     Window,
-    /** 加载与延时提示界面 */
+    /**Loading and delay prompt interface */
     Netinstable
 }
 
-/** 打开界面方式的配置数据 */
+/**Open the configuration data of the interface mode */
 export var UIConfigData: { [key: number]: UIConfig } = {
-    [UIID.Loading]: { layer: LayerType.UI, prefab: "loading/prefab/loading", bundle: "resources" },
+[UIID.Loading]: { layer: LayerType.UI, prefab: "loading/prefab/loading", bundle: "resources" },
     [UIID.Netinstable]: { layer: LayerType.PopUp, prefab: "common/prefab/netinstable" },
     [UIID.Window]: { layer: LayerType.Dialog, prefab: "common/prefab/window" }
 }
 ```
 
-##### 打开一个窗口
+##### Open a window
 ```
 var uic: UICallbacks = {
-    // 窗口添加到界面完成事件
+    //Window added to interface completion event
     onAdded: (node: Node, params: any) => {
         var comp = node.getComponent(LoadingViewComp) as ecs.Comp;
     }
     
-    // 窗口节点 destroy 之后回调
-    onRemoved:(node: Node | null, params: any) => {
+    //Callback after window node destroy
+onRemoved:(node: Node | null, params: any) => {
         
     }
 };
 oops.gui.open(UIID.Loading, null, uic);
 ```
 
-##### 异步函数打开一个窗口
+##### Asynchronous function opens a window
 ```
 var node = await oops.gui.openAsync(UIID.Loading);
 ```
 
-##### 关闭一个窗口
+##### Close a window
 ```
 oops.gui.remove(UIID.Loading);
 ```
 
-##### 指定一个节点来删除窗口
+##### Specify a node to delete the window
 ```
 oops.gui.removeByNode(cc.Node);
 ```
-注：这里的Node必须是通过oops.gui.open或openAsync打开的才会执行关闭
+Note: The Node here must be opened through oops.gui.open or openAsync before it can be closed.
 
-##### 缓存中是否存在指定标识的窗口
+##### Whether the window with the specified ID exists in the cache
 ```
 oops.gui.has(UIID.Loading);
 ```
 
-##### 渐隐飘过提示
+##### Fading and floating prompts
 ```
-oops.gui.toast("提示内容");
+oops.gui.toast("prompt content");
 ```
-
-##### 清除所有窗口
+##### Clear all windows
 ```
 oops.gui.clear();
 ```

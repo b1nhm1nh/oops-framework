@@ -1,86 +1,85 @@
-### 功能说明
-Oops Framework－网络模块WebSocket处理客户端与服务之间保持长链接通讯。
+### Function description
+Oops Framework -Network module WebSocket handles long-term communication between the client and the service.
 
-### 使用说明
-##### 自定义网络通讯数据协议（GZip压缩）
+### Instructions for use
+##### Customized network communication data protocol (GZip compression)
 ```
-class GameProtocol extends NetProtocolPako { 
-    /** 心跳协议 */
+class GameProtocol extends NetProtocolPako {
+    /**Heartbeat protocol */
     getHearbeat(): NetData {
         return `{"action":"LoginAction","method":"heart","data":"null","isCompress":false,"channelid":1,"callback":"LoginAction_heart"}`;
     }
 }
 ```
 
-##### 创建一个WebSocket网络连接对象
+##### Create a WebSocket network connection object
 ```
 var net = new NetNodeGame();
-var ws = new WebSock();        // WebSocket 网络连接对象
-var gp = new GameProtocol();   // 网络通讯协议对象
-var gt = new NetGameTips()     // 网络提示对象
+var ws = new WebSock(); //WebSocket network connection object
+var gp = new GameProtocol(); //Network communication protocol object
+var gt = new NetGameTips() //Network tips object
 net.init(ws, gp, gt);
 NetManager.getInstance().setNetNode(net, NetChannelType.Game);
 ```
 
-##### 连接游戏服务器
+##### Connect to game server
 ```
 var options = {
     url: `ws://127.0.0.1:3000`,
-    autoReconnect: 0            // -1 永久重连，0不自动重连，其他正整数为自动重试次数
+    autoReconnect: 0 //-1 permanent reconnect, 0 does not automatically reconnect, other positive integers are the number of automatic retries
 }
 NetManager.getInstance().connect(options, NetChannelType.Game);
 ```
 
-##### 断开游戏服务器连接
+##### Disconnect from the game server
 ```
 NetManager.getInstance().close(undefined, undefined, NetChannelType.Game);
     
 ```
-
-##### 游戏服务器提示
+##### Game Server Tips
 ```
 export class NetGameTips implements INetworkTips {
-    /** 连接提示 */
+    /**Connection prompt */
     connectTips(isShow: boolean): void {
         if (isShow) {
-            Logger.logNet("游戏服务器正在连接");
+            Logger.logNet("Game server is connecting");
             tips.netInstableOpen();
         }
         else {
-            Logger.logNet("游戏服务器连接成功");
+            Logger.logNet("Game server connection successful");
             tips.netInstableClose();
             Message.dispatchEvent(GameEvent.GameServerConnected);
         }
     }
 
-    /** 重连接提示 */
-    reconnectTips(isShow: boolean): void { 
-        if (isShow) {
-            Logger.logNet("重连开始");
+    /**Reconnection prompt */
+    reconnectTips(isShow: boolean): void {
+if (isShow) {
+            Logger.logNet("Reconnection starts");
         }
         else {
-            Logger.logNet("重连成功");
+            Logger.logNet("Reconnection successful");
         }
     }
 
-    /** 请求提示 */
+    /**Request prompt */
     requestTips(isShow: boolean): void {
         if (isShow) {
-            Logger.logNet("请求数据开始");
+            Logger.logNet("Request data starts");
         }
         else {
-            Logger.logNet("请求数据完成");
+            Logger.logNet("Request data completed");
         }
     }
 
-    /** 响应错误码提示 */
+    /**Response error code prompt */
     responseErrorCode(code: number): void {
-        console.log("游戏服务器错误码", code);
+        console.log("Game server error code", code);
     }
 }
 ```
 
-##### 请求服务器数据
+##### Request server data
 ```
 var params: any = {
     playerId: 10000
@@ -89,21 +88,21 @@ var params: any = {
 let onComplete = {
     target: this,
     callback: (data: any) => {
-        // 服务器返回数据
+        //Server returns data
         console.log(data);
     }
 }
-// net为NetNodeGame对象
+//net is the NetNodeGame object
 net.req("LoginAction", "loadPlayer", params, onComplete);
 ```
 
-##### 监听服务器推送数据
+##### Listen to server push data
 ```
 var onComplete = (data: any) => {
-    // 服务器返回数据
+    //The server returns data
     console.log(data);
 }
 
-// net为NetNodeGame对象
+//net is the NetNodeGame object
 net.setResponeHandler("notify", onComplete, this);
 ```

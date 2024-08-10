@@ -1,67 +1,67 @@
-### 功能说明
-Oops Framework－时间管理模块主要实现在游戏中不同类型的定时器功能。
+### Function description
+Oops Framework-time management module mainly implements different types of timer functions in games.
 
-### 使用说明
-##### 获取游戏开始到现在逝去的时间
+### Instructions for use
+##### Get the elapsed time from the start of the game to now
 ```
 oops.timer.getTime();
 ```
 
-##### 获取本地时间刻度
+##### Get local time scale
 ```
 oops.timer.getLocalTime();
 ```
 
-##### 注册一个固定间隔时间的触发器
+##### Register a trigger with a fixed interval
 ```
 oops.timer.schedule(()=>{
-    // 每秒触发一次
+    //Trigger once every second
 }, 1000);
 ```
 
-##### 注册一个只触发一次的延时的触发器
+##### Register a delayed trigger that only fires once
 ```
 oops.timer.scheduleOnce(()=>{
-    // 1秒后触发一次后不会在触发
+    //After triggering once after 1 second, it will not trigger again.
 }, 1000);
 ```
 
-##### 删除一个时间触发器
+##### Delete a time trigger
 ```
 var uuid = oops.timer.schedule(()=>{
-    // 每秒触发一次
+    //Trigger once every second
 }, 1000);
 
-// 删除指定标识的触发器
+//Delete the trigger with the specified ID
 oops.timer.unschedule(uuid);
 ```
 
-##### 删除所有时间触发器
+##### Delete all time triggers
 ```
 oops.timer.unscheduleAll();
 ```
 
-##### 在指定对象上注册一个倒计时的回调管理器
+##### Register a countdown callback manager on the specified object
 ```
 export class Test extends Component {
     private timeId!: string;
     
     start() {
-        // 在指定对象上注册一个倒计时的回调管理器
+        //Register a countdown callback manager on the specified object
         this.timeId = oops.timer.register(this, "countDown", this.onSecond, this.onComplete);
     }
     
     private onSecond() {
-        console.log("每秒触发一次");
+        console.log("Triggered once every second");
     }
 
     private onComplete() {
-        console.log("倒计时完成触发");
+        console.log("Countdown completed trigger");
     }
 }
 ```
 
-##### 在指定对象上注销一个倒计时的回调管理器
+##### Unregister a countdown callback manager on the specified object
 ```
 export class Test extends Component {
     private timeId!: string;
@@ -71,21 +71,21 @@ export class Test extends Component {
     }
     
     onDestroy() {
-        // 在指定对象上注销一个倒计时的回调管理器
+        //Unregister a countdown callback manager on the specified object
         oops.timer.unRegister(this.timeId);
     }
 }
 ```
 
-##### 定时跳动组件
+##### Timing beating component
 ```
 export class Test extends Component {
-    // 创建一个定时跳动组件
+    //Create a timed beat component
     private timer: Timer = new Timer(1);
 
     update(dt: number) {
-        if (this.timer.update(this.dt)) {
-            console.log(每一秒触发一次);
+if (this.timer.update(this.dt)) {
+            console.log(triggered every second);
         }
     }
 }

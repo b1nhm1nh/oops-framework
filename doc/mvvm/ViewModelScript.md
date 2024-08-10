@@ -1,76 +1,76 @@
 ## View Model Script
 
-### 介绍 
+### introduce 
 
-View Model 的脚本用法
+Script usage of View Model
 
-### 方法
+### method
 
-VM是 VMManager 的实例, 用于管理所有的 ViewModel 实例。ViewModel实例 主要用于实现数据的双向绑定，内部使用了 cc.director.emit 方法  来发送数据变动的消息,在使用时你可以不用关注于这些细节。
+VM is an instance of VMManager, used to manage all ViewModel instances. ViewModel instances are mainly used to implement two-way binding of data. The cc.director.emit method is used internally to send data change messages. You do not need to pay attention to these details when using it.
 
-我们可以通过 import  VM（VMManager） 对象 来管理 所有的 ViewModel ，**不建议**直接去使用 ViewModel 实例。
+We can manage all ViewModels by importing VM (VMManager) objects. It is not recommended to use ViewModel instances directly.
 
 ```typescript
-//TS 使用 import 引入
+//TS is introduced using import
 import { VM } from './ViewModel';
 
-//JS 可以使用 require 的方式引入,其他用法没有区别
-const { VM } = require('./ViewModel'); 
+//JS can be introduced using require, there is no difference in other usages
+const { VM } = require('./ViewModel');
 ```
 
-- `add` - 创建并且添加一个 ViewModel 对象
+-`add` -Create and add a ViewModel object
 
-  ``` typescript
+  ```typescript
   VM.add(data,tag);
-  //data  - 你想要进行 绑定 的数据对象
-  //tag  - 该数据对象的索引标签，用于之后获取该 ViewModel 对象
+  //data -the data object you want to bind
+  //tag -the index tag of the data object, used to obtain the ViewModel object later
   ```
 
-- `get` - 获取
+-`get` -get
 
   ```typescript
-  let vm =  VM.get(tag);//获取的结果是一个 ViewModel 对象
-  let data =  vm.$data; //获取 vm 绑定的 data 对象
-  vm.active = false; // 关闭 vm 的数据通知功能
+  let vm = VM.get(tag); //The obtained result is a ViewModel object
+  let data = vm.$data; //Get the data object bound to vm
+  vm.active = false; //Turn off the data notification function of vm
   ```
 
-- `remove` - 移除
+-`remove` -remove
 
   ```typescript
-  VM.remove(tag);//移除一个指定 tag 的 ViewModel 对象
+  VM.remove(tag);//Remove a ViewModel object with a specified tag
   ```
-- `setValue` - 设置一个值（以tag开头的全局路径）
+-`setValue` -Set a value (global path starting with tag)
 
     ```typescript
     VM.setValue('global.player.name','wss');
-    //注意 global 是 ViewModel 的标签，player.name 是 ViewModel 内部的取值路径
-    //使用 VM 全局管理，必须按这种全局路径的方式设置值
+//Note that global is the label of ViewModel, player.name is the value path inside ViewModel
+    //To use VM global management, the value must be set in this global path.
     ```
-- `addValue` - 累加一个值（以tag开头的全局路径）
+-`addValue` -accumulate a value (global path starting with tag)
 
   ```typescript
   VM.addValue('global.player.hp',10);
   ```
 
-- `getValue` -  获取一个值（以tag开头的全局路径）
+-`getValue` -Get a value (global path starting with tag)
 
   ```typescript
-  VM.getValue('global.player.name',default);//default 是 默认值
+  VM.getValue('global.player.name',default);//default is the default value
   ```
 
-- `setObjValue`  - 以路径的形式 设置 一个 对象的值
-- `getObjValue` - 以路径的形式 获取 一个 对象的值
-- `bindPath` - 绑定需要监听的路径
-- `unbindPath` - 取消绑定需要监听的路径
-- `active` - 激活 数值变动的事件通知
-- `inactive` - 关闭 数值变动的事件通知
+-`setObjValue` -Set the value of an object in the form of a path
+-`getObjValue` -Get the value of an object in the form of a path
+-`bindPath` -Bind the path that needs to be monitored
+-`unbindPath` -Unbind the path that needs to be monitored
+-`active` -activate event notification of value changes
+-`inactive` -Turn off event notification of value changes
 
-### 例子
+### example
 
 ```typescript
 import { VM } from './ViewModel';
 
-//构建数据对象
+//Build data object
 let data = {
     name:'user',
     gold:12200,
@@ -78,30 +78,28 @@ let data = {
         id:0
     }
 }
-//创建 VM 对象，并且添加到 VMManager 来进行管理, 标记为 'user'  标签
+//Create a VM object and add it to VMManager for management, marked with the 'user' tag
 VM.add(data,'user');
 
- //通过 'user' 标签获取一个 ViewModel 的实例
-let vm =  VM.get('user');
-vm.$data; // vm.$data === data;
+ //Get an instance of ViewModel through the 'user' tag
+let vm = VM.get('user');
+vm.$data; //vm.$data === data;
 
- //设置新的属性值
+ //Set new attribute value
 vm.setValue('name','new Name');
 
-//获取属性
-vm.getValue('gold'); 
+//Get attributes
+vm.getValue('gold');
 
- //通过相对路径获取属性
+ //Get attributes through relative paths
 vm.getValue('info.id');
+//Once the value is modified, cc.director will be notified and emit will be used to send the message.
+data.name = 'my_name';
 
-//一旦修改值，将会通知 cc.director, 使用emit 发送消息 
-data.name = 'my_name'; 
+//After turning off the activation state, cc.director will not be notified to deliver information.
+vm.active = false;
 
-//关闭激活状态后，就不会通知 cc.director 传递信息了
-vm.active = false; 
-
-//移除ViewModel，并且释放 data 的引用
+//Remove ViewModel and release the reference to data
 VM.remove('user');
-data = null；
+data = null;
 ```
-

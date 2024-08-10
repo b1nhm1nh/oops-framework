@@ -1,51 +1,49 @@
-### 原创作者上有2.x的DEMO
-Github 地址: https://github.com/wsssheep/cocos_creator_mvvm_tools
+### The original author has a 2.x DEMO.
+Github address: https://github.com/wsssheep/cocos_creator_mvvm_tools
 
-### 项目结构
+### Project structure
 
-核心脚本文件存放在 assets\Script\modelView 路径,要使用必须全部引入
+The core script files are stored in the assets\Script\modelView path. To use them, they must be imported.
 
-- **JsonOb.ts** -  实现基础的 观察者模式, 改变绑定的数据会自动调用回调函数。你可以随时替换成自己写的观察者。
-- **ViewModel.ts** - VM的核心模块，动态管理ViewModel，使用 cc.director.emit 通知 游戏内的节点组件改变状态。
-- **VMBase.ts** - VM监听核心组件，用于接收ViewModel 的数值变动消息。VMCustom /VMEvent 之类的衍生组件都是继承自VMBase
-- **VMParent.ts** - VM父组件，适合 多实例的 prefab 弹窗使用， 它将数据绑定在继承 VMparent 的组件上，只属于此次创建的实例。 需要以特殊方式继承使用。
-
-****
-
-### 组件简介
-
-- `VMCustom` — 挂载VMCustom，然后会自动识别当前节点的组件(也可以自行设置)。填上你的数值路径，大功告成。
-- `VMLabel` —  挂在VMLabel ，不用担心你的数值是整是零，使用模板语法 {{0:int}}自动格式化，解决文本数据显示的问题
-- `VMState` — 解决节点状态的切换问题
-- `VMProgress` — 解决进度条显示问题
-- `VMEvent `—挂载VMEventCall, 触发事件。在值变化时调用其他组件方法(结合其他组件使用事半功倍)
-- `VMParent` — 定义局部范围使用 的 ViewModel数据
-
-定义数据模型: `VM.add(data,"tag")`
-
-一直被 cc.find、getChildByName，getComponent， 所以一直想要整理个好的方案。部分参考了Vue(OS:假装参考了)， 以适合 Creator 组件化的方式引入 MVVM。你甚至可以不写一行代码就完成大部分的复杂的UI逻辑，非常适合高强度的细节修改 (os:让策划自己改去)。
-这套工具核心在于提供的组件集合，而不是Mvvm本身。使用的是低耦合度的组件脚本来控制数值监听的绑定，侵入性较低。
+-**JsonOb.ts**-Implements the basic observer pattern. Changing the bound data will automatically call the callback function. You can always replace it with an observer you write yourself.
+-**ViewModel.ts**-The core module of VM, dynamically manages ViewModel, and uses cc.director.emit to notify the node components in the game to change state.
+-**VMBase.ts**-VM monitoring core component, used to receive value change messages of ViewModel. Derived components such as VMCustom /VMEvent are inherited from VMBase
+-**VMParent.ts**-VM parent component, suitable for multi-instance prefab pop-up windows. It binds data to components that inherit VMparent and only belongs to the instance created this time. It needs to be inherited and used in a special way.
 
 ****
 
-### 用法说明
+### Introduction to components
+-`VMCustom` — Mount VMCustom, and then the components of the current node will be automatically identified (you can also set it yourself). Fill in your numerical path and you're done.
+-`VMLabel` — Hang on VMLabel, don’t worry about whether your value is integer or zero, use template syntax {{0:int}} to automatically format, solving the problem of text data display
+-`VMState` — solve the node state switching problem
+-`VMProgress` — solve the problem of progress bar display
+-`VMEvent`—mount VMEventCall and trigger events. Call other component methods when the value changes (use it in conjunction with other components to get twice the result with half the effort)
+-`VMParent` — Define the ViewModel data used by the local scope
 
-- **导入框架** -  导入 assets\Script\modelView 中的所有脚本
+Define data model: `VM.add(data,"tag")`
 
-- **建立数据模型**  -  任意位置新建一个数据脚本，定义自己的数据模型，使用`VM.add(data,'tag')` 添加viewModel。 可以通过VM直接管理该数据，或者自己全局管理 data 数据模型。
+I have been using cc.find, getChildByName, and getComponent, so I always wanted to put together a good solution. Partially refers to Vue (OS: pretend to refer to it), and introduces MVVM in a way suitable for Creator componentization. You can even complete most of the complex UI logic without writing a line of code, which is very suitable for high-intensity detailed modifications (os: let the planner change it by himself).
+The core of this set of tools lies in the collection of components provided, not Mvvm itself. A low-coupling component script is used to control the binding of numerical listeners, which is less intrusive.
 
--  **挂脚本**  -  编辑器中直接添加组件 VMCustom ，它会自动识别绑定到需要设置值的组件和组件的属性，比如cc.Label、cc.Progress等。 你只要填写对应的watchPath, 就会自动赋值到组件的属性上。比如填写 global.play.hp ，就会在游戏运行时赋值给绑定的组件属性。
+****
 
-- **改数据**  -  在游戏中任意改变 global.play.hp的值，对应的label 就会自动改变数值。
+### Usage instructions
 
-- **全局注册VM**:    (全局自由使用路径) VM.add(data,'tag'); //
+-**Import Framework**-Import all scripts in assets\Script\modelView
 
-- **局部组件使用VM**:   (只在组件内使用的相对路径) 
+-**Create data model**-Create a new data script anywhere, define your own data model, and use `VM.add(data,'tag')` to add viewModel. This data can be managed directly through the VM, or the data data model can be managed globally by yourself.
 
-  1.继承VMParent 组件
+-**Hang script**-Add the component VMCustom directly in the editor, and it will automatically identify the components bound to the components that need to set values ​​and the properties of the components, such as cc.Label, cc.Progress, etc. As long as you fill in the corresponding watchPath, it will be automatically assigned to the component's properties. For example, filling in global.play.hp will assign values ​​to the bound component properties when the game is running.
 
-  2.在组件内设置 data 数据（data属性） 
+-**Change data**-If you change the value of global.play.hp arbitrarily in the game, the corresponding label will automatically change the value.
+-**Global registration VM**: (global free use path) VM.add(data,'tag'); //
 
-  3.相对路径 使用  *.name 的方式设置 watchPath,VMParent 会在 onLoad 的时候自动将 * 替换成 实际的 ViewModel 标签，以便监听数据变化。
+-**Local components use VM**: (only relative paths used within components)
+
+  1. Inherit the VMParent component
+
+  2. Set data data (data attribute) in the component
+
+  3. Relative path Use *.name to set watchPath. VMParent will automatically replace *with the actual ViewModel label during onLoad to monitor data changes.
 
 ****

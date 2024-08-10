@@ -1,38 +1,35 @@
-### 功能说明
-Oops Framework－本地存储模块主要封装了Cocos Crator引擎里sys.localStorage对象的跨平台平地存储功能，同时在此基础上添加了数据加密与不同帐号区分的功能。
+### Function description
+Oops Framework -the local storage module mainly encapsulates the cross-platform flat storage function of the sys.localStorage object in the Cocos Crator engine, and also adds the functions of data encryption and different account differentiation on this basis.
 
-### 使用说明
-##### 初始化本地存储加密
+### Instructions for use
+##### Initialize local storage encryption
 ```
 oops.storage.init("key", "vi");
 ```
-注：调试模式下不会触发数据加密，方便明文调试。发布模式自动启动数据加密
+Note: Data encryption will not be triggered in debugging mode, which facilitates clear text debugging. Release mode automatically starts data encryption
 
-##### 初始化本地存储加密
+##### Initialize local storage encryption
 ```
-var uid = 10000;                // 用户唯一编号数据
+var uid = 10000; //User unique number data
 oops.storage.setUser(uid);
 ```
-注：用于区分不同账号本地存储数据，避免同名key的数据被其它账号登录时覆盖
+Note: Used to distinguish local storage data of different accounts to prevent data with the same key from being overwritten when logging in with other accounts.
 
-##### 设置指定关键字的数据
+##### Set the data of the specified keyword
 ```
 oops.storage.set(key, value);
 ```
 
-##### 获取指定关键字的数据
+##### Get the data of the specified keyword
 ```
 var data = oops.storage.get(key);
 ```
-
-##### 删除指定关键字的数据
+##### Delete the data of the specified keyword
 ```
 oops.storage.remove(key);
 ```
 
-##### 清空整个本地存储
+##### Clear the entire local storage
 ```
 oops.storage.clear();
 ```
-
-

@@ -1,29 +1,28 @@
 ## VM Modify
 
-### 介绍 
+### introduce 
 
-VM组件 修改数据，修改指定 路径 watchPath 的 数据。一般配合 cc.Button 组件使用，可以点击按钮后直接修改指定路径的值。
+The VM component modifies data and modifies the data of the specified path watchPath. Generally used with the cc.Button component, you can directly modify the value of the specified path after clicking the button.
 
-### 编辑器属性
+### Editor properties
 
-- `Watch Path ` - 绑定数值监听路径
-- `Value Clamp` - 是否限制数字的修改范围
-- `Value Min` - 限制最小值不低于 
-- `Value Min` - 限制最大值不高于 
+-`Watch Path ` -Bind numerical monitoring path
+-`Value Clamp` -whether to limit the modification range of numbers
+-`Value Min` -limit the minimum value to no less than
+-`Value Min` -limits the maximum value to no higher than
 
-### 使用方式
+### How to use
 
-类似 Click Events 的设置调用节点上组件的方法， 去调用VMModify 组件上的对应函数，就可以修改 watch Path 监听的 路径的值。
+Similar to Click Events settings, you can modify the value of the path monitored by watch Path by calling the corresponding function on the VMModify component.
 
-- `vAddInt` - 增加整数
-- `vSubInt` - 减少整数
-- `vMulInt` - 乘以整数
-- `vDivInt` - 除以整数
-- `vAdd` - 增加浮点数
-- `vSub` - 减少浮点数
-- `vMul` - 乘以浮点数
-- `vDiv` - 除以浮点数
-- `vString` - 设置字符串
-- `vNumberInt` - 设置 整数
-- `vNumber` - 设置 浮点数
-
+-`vAddInt` -adds an integer
+-`vSubInt` -reduce integer
+-`vMulInt` -multiply an integer
+-`vDivInt` -divide by an integer
+-`vAdd` -add floating point number
+-`vSub` -reduce floating point numbers
+-`vMul` -multiply floating point numbers
+-`vDiv` -divide by floating point number
+-`vString` -set string
+-`vNumberInt` -set integer
+-`vNumber` -set floating point number

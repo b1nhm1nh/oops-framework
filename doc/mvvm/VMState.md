@@ -1,42 +1,41 @@
 ## VM State
 
-### 介绍 
+### introduce 
 
-VM组件 状态条件，根据watchPath 路径，判断值是不是符合条件，再设置对应节点的状态。 可以根据数据改变节点的颜色，节点的激活与关闭等等情况。
+VM component status conditions, based on the watchPath path, determine whether the value meets the conditions, and then set the status of the corresponding node. You can change the color of the node according to the data, activate and close the node, etc.
 
-### 编辑器属性
+### Editor properties
 
-- `Watch Path ` - 绑定数值监听路径
-- `Foreach Child Mode` - 特殊的比较值的方式，它会拿当前节点下的所有子节点的名字作为值的比较，来控制所有子节点的显示状态。
-- `Foreach Child Type` - `NODE_INDEX` 比较节点的index 值 或者 `NODE_NAME` 比较节点的名字
-- `Condition` - 判断条件，判断值的的大小是否符合条件
-- `Value Action`-  效果行为，当状态满足时候执行的条件
-- `Watch Nodes` - 需要变化状态的节点,如果不设置，默认就会改变本节点以及子节点的所有状态。
+-`Watch Path ` -Bind numerical monitoring path
+-`Foreach Child Mode` -A special way to compare values. It will use the names of all child nodes under the current node as value comparison to control the display status of all child nodes.
+-`Foreach Child Type` -`NODE_INDEX` compares the index value of the node or `NODE_NAME` compares the name of the node
+-`Condition` -Judgment conditions, judging whether the size of the value meets the conditions
+-`Value Action`-effect behavior, conditions to be executed when the state is met
+-`Watch Nodes` -Nodes that need to change their state. If not set, all states of this node and its child nodes will be changed by default.
 
-### 效果行为
+### Effect behavior
 
-- `NODE_ACTIVE` - 改变节点的激活状态（挂载到本节点无效）
+-`NODE_ACTIVE` -Change the activation status of the node (mounting to this node is invalid)
+-`NODE_VISIBLE` -Change the display status of the node (opacity switching). It is effective when mounted to this node and only affects the display.
 
-- `NODE_VISIBLE` - 改变节点的显示状态(不透明度切换) ，挂载到本节点有效，只影响显示。
+-`NODE_OPACITY` -Change the opacity of a node
 
--  `NODE_OPACITY` - 改变节点的不透明度
+  `Action Opacity` -sets an opaque value
 
-  `Action Opacity` - 设置 不透明的值
+-`NODE_COLOR` -change the color of a node
 
-- `NODE_COLOR` - 改变节点的颜色
+  `Action Color` -Set the value of a color
 
-  `Action Color` - 设置颜色的值
+-`COMPONENT_CUSTOM` -Completely customizable changes to component properties
 
-- `COMPONENT_CUSTOM` - 完全自定义改变组件属性
+  `Component Name` -component name
 
-  `Component Name` - 组件名 
+  `Component Property` -a property on a component
 
-  `Component Property` - 组件上的属性
+  `Default Value` -default value
 
-  `Default Value` - 默认值
+  `Action Value` -the value changed when the condition is met
 
-  `Action Value` - 满足条件改变的值
+### Notes
 
-### 注意事项
-
-NODE_ACTIVE  条件  不会改变自身节点的 激活状态
+NODE_ACTIVE condition will not change the activation status of its own node
